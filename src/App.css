@@ -1,0 +1,248 @@
+/* src/App.css */
+
+/* --- 1. THEME & FONT DEFINITION --- */
+:root {
+  --bg-gradient-start: #23074d;
+  --bg-gradient-end: #cc5333;
+  --container-bg: rgba(255, 255, 255, 0.1);
+  --container-border: rgba(255, 255, 255, 0.2);
+  --primary-glow: #ff6b81; /* A vibrant pink for glows */
+  --secondary-action: #ff9a8b;
+  --text-color: #f0f0f0;
+  --text-shadow: #00000030;
+  --font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  background-attachment: fixed; /* Makes gradient stay in place on scroll */
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* --- 2. ANIMATIONS --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 3. MAIN APP CONTAINER (GLASSMORPHISM) --- */
+.App {
+  width: 100%;
+  max-width: 550px;
+  margin: 20px;
+  padding: 40px;
+  background: var(--container-bg);
+  border-radius: 20px;
+  border: 1px solid var(--container-border);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px); /* For Safari */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* --- 4. TYPOGRAPHY --- */
+h1, h2, h3 {
+  text-shadow: 2px 2px 4px var(--text-shadow);
+}
+
+h1 {
+  color: var(--primary-glow);
+  font-size: 2.8rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+h2 {
+  font-weight: 600;
+  color: #fff;
+}
+
+h3 {
+  color: #eee;
+  font-size: 1.6rem;
+  margin-bottom: 25px;
+}
+
+/* --- 5. INPUTS & GENERAL BUTTONS --- */
+input[type="text"] {
+  background-color: var(--container-bg);
+  border: 1px solid var(--container-border);
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 1rem;
+  color: var(--text-color);
+  width: calc(100% - 30px);
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  font-family: var(--font-family);
+}
+input[type="text"]::placeholder {
+  color: #ffffff99;
+}
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary-glow);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.btn {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(145deg, var(--secondary-action), var(--primary-glow));
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px 0 rgba(255, 107, 129, 0.4);
+}
+.btn:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px 0 rgba(255, 107, 129, 0.6);
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --- 6. GAME-SPECIFIC STYLES --- */
+.game-code {
+  background: rgba(0,0,0,0.3);
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #fff;
+  display: inline-block;
+  margin-top: 15px;
+  border: 1px dashed var(--container-border);
+}
+
+.player-list ul { list-style-type: none; padding: 0; }
+.player-list li {
+  background: var(--container-bg);
+  margin: 8px auto;
+  padding: 12px;
+  border-radius: 8px;
+  width: 70%;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Stylish Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--text-color);
+  margin: 20px 0;
+  font-weight: bold;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--container-border);
+}
+.divider:not(:empty)::before { margin-right: .25em; }
+.divider:not(:empty)::after { margin-left: .25em; }
+
+
+/* --- 7. "WOULD YOU RATHER" OPTION BUTTONS (THE FUN PART) --- */
+.btn-option {
+  width: 100%;
+  padding: 20px;
+  font-size: 1.2rem;
+  background-color: var(--container-bg);
+  color: var(--text-color);
+  border: 1px solid var(--container-border);
+  transition: all 0.2s ease-in-out;
+}
+.btn-option:hover:not(:disabled) {
+  transform: scale(1.03);
+  border-color: var(--primary-glow);
+  background-color: rgba(255, 107, 129, 0.1);
+}
+.btn-option.selected {
+  background: linear-gradient(145deg, var(--secondary-action), var(--primary-glow));
+  color: white;
+  border-color: var(--primary-glow);
+  transform: scale(1.03);
+  font-weight: bold;
+}
+.btn-option.selected .check-mark {
+  opacity: 1; /* Show the check mark when selected */
+}
+
+/* Checkmark Icon for Selected Option */
+.check-mark {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* --- 8. RESULTS VIEW WITH PROGRESS BARS --- */
+.results-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.result-option {
+  background-color: var(--container-bg);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: left;
+  border: 1px solid var(--container-border);
+}
+.result-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.result-bar-bg {
+  width: 100%;
+  height: 25px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.result-bar-fg {
+  height: 100%;
+  width: 0; /* Starts at 0, width is set by inline style */
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--secondary-action), var(--primary-glow));
+  transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth animation */
+  text-align: right;
+  padding-right: 10px;
+  box-sizing: border-box;
+  color: white;
+  font-weight: bold;
+  line-height: 25px; /* Vertically center the percentage text */
+}
+.voter-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.voter-list li {
+  background-color: rgba(0,0,0,0.3);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
