@@ -1,26 +1,25 @@
 // api/getwyrquestion.js
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// This is a default Vercel function export
 export default async function handler(req, res) {
-  // It will get this key from Vercel's environment variables
+  // It gets this key from Vercel's environment variables (GEMINI_KEY)
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
   
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const prompt = `Generate a "Would You Rather" question in a strict JSON format with keys "optionA" and "optionB".`;
+    const prompt = `Generate a "Would You Rather" style question. The question should be fun, thought-provoking, and suitable for a general audience. Provide the output in a strict JSON format with two keys: "optionA" and "optionB". Do not include any other text, explanations, or markdown formatting like \`\`\`json.`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let text = response.text().replace(/```json/g, "").replace(/```/g, "").trim();
     const question = JSON.parse(text);
 
-    // Send a successful response with the question object
+    // Send a 200 OK status with the JSON question
     res.status(200).json(question);
 
   } catch (error) {
     console.error("Error calling Gemini API:", error);
-    // Send an error response
+    // Send a 500 Internal Server Error response if something fails
     res.status(500).json({ error: "Failed to generate question." });
   }
 }
