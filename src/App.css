@@ -246,3 +246,39 @@ input[type="text"]:focus {
   border-radius: 5px;
   font-size: 0.9rem;
 }
+
+/* --- PIKACHU AND SPEECH BUBBLE STYLES --- */
+.pikachu-container {
+  margin: 20px 0 40px 0;
+  position: relative;
+  height: 150px;
+}
+.pikachu-image {
+  width: 120px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+.speech-bubble {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(30%);
+  background: white;
+  color: #333;
+  padding: 12px 18px;
+  border-radius: 20px;
+  width: 200px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  transform: translateX(-50%) translateY(90%);
+  width: 0;
+  height: 0;
+  border: 15px solid transparent;
+  border-top-color: white;
+  border-bottom: 0;
+}
