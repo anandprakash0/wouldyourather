@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { db } from '../firebase';
 import { doc, setDoc, onSnapshot, updateDoc } from 'firebase/firestore';
+import pikachu from '../assets/pikachu.gif'; // Make sure pikachu.gif is in src/assets/
 
 function GamePage({ gameId, user, onLeaveGame }) {
   const [game, setGame] = useState(null);
@@ -84,9 +85,9 @@ function GamePage({ gameId, user, onLeaveGame }) {
     }
   }, [game, gameRef]);
 
-  const renderResults = () => { /* ... NO CHANGE HERE ... */ };
-  const checkMarkIcon = ( /* ... NO CHANGE HERE ... */ );
-  // KEEP THE PREVIOUS (NO-CHANGE) CODE FOR renderResults AND checkMarkIcon HERE
+
+  // ---- This is the corrected section ----
+  
   const renderResults = () => {
     const players = Object.values(game.players);
     const totalVotes = players.length;
@@ -130,6 +131,7 @@ function GamePage({ gameId, user, onLeaveGame }) {
       </div>
     );
   };
+  
   const checkMarkIcon = (
     <svg className="check-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
       <circle cx="26" cy="26" r="25" fill="none" stroke="white" strokeWidth="2" />
@@ -138,7 +140,10 @@ function GamePage({ gameId, user, onLeaveGame }) {
   );
 
 
+  // ---- Main return block starts here ----
+
   if (!game) return <div>Loading Game...</div>;
+
   const myVote = game.players[user.id]?.vote;
   const isHost = game.hostId === user.id;
 
@@ -146,15 +151,28 @@ function GamePage({ gameId, user, onLeaveGame }) {
     <div>
       <button className="btn" style={{ position: 'absolute', top: '20px', right: '20px' }} onClick={onLeaveGame}>Leave</button>
       <h2>Game Code: <span className="game-code">{gameId}</span></h2>
+      
       {game.state === 'LOBBY' && (
-        <div className="player-list">
-          <h3>Players in Lobby:</h3>
-          <ul>{Object.values(game.players).map(p => <li key={p.name}>{p.name}</li>)}</ul>
-          {isHost && <button className="btn" onClick={handleStartGame} disabled={isLoading}>{isLoading ? 'Starting...' : 'Start Game'}</button>}
-          {!isHost && <p>Waiting for the host to start...</p>}
+        <div>
+          <div className="pikachu-container">
+            <img src={pikachu} alt="Waving Pikachu" className="pikachu-image" />
+            {game.players[game.hostId] && (
+              <div className="speech-bubble">
+                You are in {game.players[game.hostId].name}'s idiot game!
+              </div>
+            )}
+          </div>
+          <div className="player-list">
+            <h3>Players in Lobby:</h3>
+            <ul>{Object.values(game.players).map(p => <li key={p.name}>{p.name}</li>)}</ul>
+            {isHost && <button className="btn" onClick={handleStartGame} disabled={isLoading}>{isLoading ? 'Starting...' : 'Start Game'}</button>}
+            {!isHost && <p>Waiting for the host to start...</p>}
+          </div>
         </div>
       )}
+
       {isLoading && <p>Getting a new question from the AI...</p>}
+      
       {!isLoading && game.state === 'VOTING' && game.currentQuestion && (
         <div>
           <h3>Would you rather...</h3>
@@ -168,6 +186,7 @@ function GamePage({ gameId, user, onLeaveGame }) {
           {!!myVote && <p style={{marginTop: '20px'}}>Waiting for other players...</p>}
         </div>
       )}
+      
       {!isLoading && game.state === 'RESULTS' && game.currentQuestion && (
         <div>
           <h3>Results</h3>
